@@ -82,3 +82,11 @@ max_minute = get_max_sleepy_minute(sleepiest_guard_id, guard_time_map)
 guard_id_int = int(max_asleep[0][1:])
 print("part1 ans", guard_id_int * max_minute[0])
 
+overall_max_min = (0, 0, '') # (minute, value, guard_id)
+for guard_id in guard_time_map.keys():
+    minute, value = get_max_sleepy_minute(guard_id, guard_time_map)
+    if value > overall_max_min[1]:
+        overall_max_min = (minute, value, guard_id)
+
+guard_id_int = int(overall_max_min[2][1:])
+print("part2 ans", guard_id_int * overall_max_min[0])
