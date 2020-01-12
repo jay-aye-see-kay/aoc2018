@@ -18,7 +18,7 @@ event_list = [parse_timestamp(timestamp) for timestamp in timestamps]
 per_guard_per_day = []
 
 for event in event_list:
-    if event[0]:
+    if event[0]: # only has first field if new guard or day
         per_guard_per_day.append([event])
     else:
         per_guard_per_day[-1].append(event)
@@ -40,7 +40,7 @@ for events in per_guard_per_day:
             is_asleep = (is_asleep + 1) % 2
             event_index += 1
             if event_index < event_range:
-                change_minute = events[event_index][3]
+                change_minute = int(events[event_index][3])
         times[minute] = is_asleep
     if guard_id in guard_time_map:
         guard_time_map[guard_id][date] = times
