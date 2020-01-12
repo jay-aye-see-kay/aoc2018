@@ -18,7 +18,7 @@ event_list = [parse_timestamp(timestamp) for timestamp in timestamps]
 per_guard_per_day = []
 
 for event in event_list:
-    if event[0]: # only has first field if new guard or day
+    if event[0]:  # only has first field if new guard or day
         per_guard_per_day.append([event])
     else:
         per_guard_per_day[-1].append(event)
@@ -58,21 +58,27 @@ for guard_id, guard_times in guard_time_map.items():
         max_asleep = (guard_id, time_asleep)
 
 
-sleepy_boi = guard_time_map[max_asleep[0]]
+def get_max_sleepy_minute(guard_id, guard_time_map):
+    guard_times = guard_time_map[guard_id]
 
-asleep_minutes = {time: 0 for time in range(0, 60)}
+    # sum all minutes into one dict
+    asleep_minutes = {time: 0 for time in range(0, 60)}
+    for times in guard_times.values():
+        for minute, value in times.items():
+            asleep_minutes[minute] += value
 
-for times in sleepy_boi.values():
-    for minute, value in times.items():
-        asleep_minutes[minute] += value
+    # find the sleepiest minute
+    max_minute = (0, 0)
+    for minute, value in asleep_minutes.items():
+        if value > max_minute[1]:
+            max_minute = (minute, value)
 
-max_minute = (0, 0)
-for minute, value in asleep_minutes.items():
-    if value > max_minute[1]:
-        max_minute = (minute, value)
+    return max_minute
 
-print("guard_id", max_asleep)
-print("max_minute", max_minute)
+
+sleepiest_guard_id = max_asleep[0]
+max_minute = get_max_sleepy_minute(sleepiest_guard_id, guard_time_map)
 
 guard_id_int = int(max_asleep[0][1:])
-print('ans', guard_id_int * max_minute[0])
+print("part1 ans", guard_id_int * max_minute[0])
+
