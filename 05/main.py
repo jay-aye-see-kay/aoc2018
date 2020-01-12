@@ -18,9 +18,21 @@ def remove_pairs(polymer):
     return polymer, changed
 
 
-polymer = data
-changed = True
-while changed:
-    polymer, changed = remove_pairs(polymer)
+def reduce_polymer(polymer):
+    changed = True
+    while changed:
+        polymer, changed = remove_pairs(polymer)
+    return polymer
 
-print("1.1 ans", len(polymer))
+
+print("5.1 ans", len(reduce_polymer(data)))
+
+
+shortest_length = 1000000
+for letter in letters:
+    polymer = data.replace(letter, '').replace(letter.upper(), '')
+    reduced_polymer = reduce_polymer(polymer)
+    if shortest_length > len(reduced_polymer):
+        shortest_length = len(reduced_polymer)
+
+print('5.2 ans', shortest_length)
