@@ -31,8 +31,19 @@ def get_nearest(x, y, coordinates):
     return closest_coord
 
 
+def less_10k(x, y, coordinates):
+    total_distance = 0
+    for coord in coordinates:
+        distance =  abs(x - coord[0]) + abs(y - coord[1])
+        total_distance += distance
+    return total_distance < 10000
+
+
+safe_coord_count = 0
 for x in range(0, max_x + 1):
     for y in range(0, max_y + 1):
+        if less_10k(x, y, coord_details.keys()):
+            safe_coord_count += 1
         if (x, y) not in coord_details.keys():
             # when x, y is empty space
             nearest_coord = get_nearest(x, y, coord_details.keys())
@@ -48,3 +59,4 @@ for coord, coord_detail in coord_details.items():
         max_valid_count = coord_detail["count"]
 
 print('max_valid_count', max_valid_count)
+print('safe_coord_count', safe_coord_count)
